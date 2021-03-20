@@ -1,3 +1,40 @@
-[gd_scene format=2]
+[gd_scene load_steps=5 format=2]
 
-[node name="Node2D" type="Node2D"]
+[ext_resource path="res://Prefabs/Island.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Prefabs/HUD.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Main.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 1775.26, 37.3509 )
+
+[node name="Master" type="Node2D"]
+script = ExtResource( 3 )
+islands = [ NodePath("Island"), NodePath("Island2") ]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.8, 0.8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Island" parent="." instance=ExtResource( 1 )]
+position = Vector2( -283.004, 1.9223 )
+otherIsland = NodePath("../Island2")
+
+[node name="Island2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 263.802, 0.662384 )
+otherIsland = NodePath("../Island")
+team = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2( -0.620605, 399.599 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Control" parent="." instance=ExtResource( 2 )]
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

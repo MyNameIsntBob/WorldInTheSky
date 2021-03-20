@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/Hand.gd" type="Script" id=1]
+[ext_resource path="res://Prefabs/Card.tscn" type="PackedScene" id=2]
+
+[node name="Hand" type="HBoxContainer"]
+margin_top = 600.0
+margin_right = 1024.0
+margin_bottom = 600.0
+alignment = 1
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Card1" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 286.0
+margin_bottom = 366.0
+
+[node name="Card2" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_right = 576.0
+margin_bottom = 366.0
+
+[node name="Card3" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_right = 866.0
+margin_bottom = 366.0
+
+[node name="Card4" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 870.0
+margin_right = 1156.0
+margin_bottom = 366.0
+
+[node name="Card5" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1160.0
+margin_right = 1446.0
+margin_bottom = 366.0
+[connection signal="pressed" from="Card1" to="." method="_on_Card1_pressed"]
+[connection signal="pressed" from="Card2" to="." method="_on_Card2_pressed"]
+[connection signal="pressed" from="Card3" to="." method="_on_Card3_pressed"]
+[connection signal="pressed" from="Card4" to="." method="_on_Card4_pressed"]
+[connection signal="pressed" from="Card5" to="." method="_on_Card5_pressed"]

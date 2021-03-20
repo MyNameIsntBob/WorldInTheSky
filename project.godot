@@ -16,7 +16,19 @@ _global_script_class_icons={
 [application]
 
 config/name="WorldInTheSky"
+run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Deck="*res://Scripts/Deck.gd"
+Cards="*res://Scripts/Cards.gd"
+
+[layer_names]
+
+2d_physics/layer_1="Ground"
+2d_physics/layer_2="Character"
+2d_physics/layer_3="Orb"
 
 [rendering]
 

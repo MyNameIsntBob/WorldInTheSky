@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Prefabs/Hand.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/HUD.gd" type="Script" id=2]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 450.0
+size_flags_vertical = 3
+
+[node name="Hand" parent="CanvasLayer/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 454.0
+custom_constants/separation = 31
+[connection signal="play_cards" from="CanvasLayer/MarginContainer/VBoxContainer/Hand" to="." method="_on_Hand_play_cards"]
