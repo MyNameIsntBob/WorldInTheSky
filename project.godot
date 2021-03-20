@@ -21,8 +21,10 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Deck="*res://Scripts/Deck.gd"
 Cards="*res://Scripts/Cards.gd"
+PlayerDeck="*res://Scripts/Deck.gd"
+EnemyDeck="*res://Scripts/Deck.gd"
+Global="*res://Scripts/Global.gd"
 
 [layer_names]
 

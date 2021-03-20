@@ -14,6 +14,9 @@ onready var CHARACTER = preload('res://Prefabs/Character.tscn')
 var friends := []
 var enemies := []
 
+var isSpinning := false
+var spinSpeed := 1.0
+
 var hp := 10
 
 var rng = RandomNumberGenerator.new()
@@ -26,18 +29,27 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if Input.is_action_just_pressed("ui_cancel"):
-		for i in range(5):
-			spawn_character()
+	if isSpinning:
+		rotate(spinSpeed * delta)
+		if rotation >= 2 * PI:
+			isSpinning = false
+			rotation = 0
 			
-	if Input.is_action_just_pressed("ui_accept"):
-		launch_characters(2)
-		
-	if Input.is_action_just_pressed('ui_down'):
-		end_turn()
+#	if Input.is_action_just_pressed("ui_accept"):
+#		spin()
+	
+#	if Input.is_action_just_pressed("ui_cancel"):
+#		for i in range(5):
+#			spawn_character()
+#
+#	if Input.is_action_just_pressed("ui_accept"):
+#		launch_characters(2)
+#
+#	if Input.is_action_just_pressed('ui_down'):
+#		end_turn()
 
 func launch_characters(amount):
-	for i in range(amount + 1):
+	for _i in range(amount + 1):
 		if len(friends):
 			var character = friends.pop_front()
 			otherIsland.enemies.push_back(character)
@@ -50,8 +62,9 @@ func remove_character(character):
 	if character in enemies:
 		enemies.erase(character)
 
-func spawn_character():
+func spawn_character(type):
 	var character = CHARACTER.instance()
+	character.type = type
 	friends.push_back(character)
 	get_parent().add_child(character)
 	character.island = self
@@ -60,18 +73,28 @@ func spawn_character():
 	character.position.x += rng.randf_range(-spawnRange, spawnRange)
 	character.team = team
 	
+func shield():
+	print('I\'ll add this in a bit')
+	
+func heal(amount):
+	hp += amount
+	
 func take_damage(amount):
 	hp -= amount
+	
+func spin():
+	rotation = 0
+	isSpinning = true
 	
 func end_turn():
 	for val in friends:
 		if val:
-			val.attack()
+			val.take_turn()
 		else:
 			enemies.erase(val)
 	
 	for val in enemies:
 		if val:
-			val.attack()
+			val.take_turn()
 		else:
 			enemies.erase(val)

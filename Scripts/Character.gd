@@ -5,6 +5,15 @@ enum teams {
 	GOBLINS
 }
 
+enum types {
+	ARCHER,
+	WARRIOR
+}
+
+var type : int
+var team : int
+var onEnemy := false
+
 var hp := 1
 var damage := 1
 
@@ -18,9 +27,6 @@ var directionVariety := PI/12
 
 var island
 
-var onEnemy := false
-var team
-
 var gravity := 100
 var velocity := Vector2.ZERO
 
@@ -28,6 +34,8 @@ var rng = RandomNumberGenerator.new()
 
 var bounceForce := 50
 var bounceVariety := 10
+
+var readyTurn := false
 
 var enemies := []
 
@@ -40,21 +48,27 @@ func _process(delta):
 	velocity.y += gravity * delta
 	
 	if is_on_floor():
+		if readyTurn:
+			attack()
 		velocity = velocity.linear_interpolate(Vector2.ZERO, friction)
 	else:
 		velocity = velocity.linear_interpolate(Vector2.ZERO, airResistance)
 	
-	
+func take_turn():
+	readyTurn = true
 
 func attack():
+	
 	if len(enemies):
+		attack()
 		var en = enemies.pop_front()
 		if en:
 			en.kill()
 	
 	else:
 		bounce()
-	
+	readyTurn = false
+		
 func bounce():
 	var newForce = rng.randf_range(bounceForce - bounceVariety, bounceForce + bounceVariety)
 	var newDirection = rng.randf_range(launchDirection - directionVariety, launchDirection + directionVariety)

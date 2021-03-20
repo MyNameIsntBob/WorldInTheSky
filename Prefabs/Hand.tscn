@@ -7,7 +7,6 @@
 margin_top = 600.0
 margin_right = 1024.0
 margin_bottom = 600.0
-alignment = 1
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -16,36 +15,36 @@ __meta__ = {
 [node name="Card1" parent="." instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 286.0
-margin_bottom = 366.0
+margin_right = 114.0
+margin_bottom = 146.0
 
 [node name="Card2" parent="." instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 290.0
-margin_right = 576.0
-margin_bottom = 366.0
+margin_left = 118.0
+margin_right = 232.0
+margin_bottom = 146.0
 
 [node name="Card3" parent="." instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 580.0
-margin_right = 866.0
-margin_bottom = 366.0
+margin_left = 236.0
+margin_right = 350.0
+margin_bottom = 146.0
 
 [node name="Card4" parent="." instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 870.0
-margin_right = 1156.0
-margin_bottom = 366.0
+margin_left = 354.0
+margin_right = 468.0
+margin_bottom = 146.0
 
 [node name="Card5" parent="." instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 1160.0
-margin_right = 1446.0
-margin_bottom = 366.0
+margin_left = 472.0
+margin_right = 586.0
+margin_bottom = 146.0
 [connection signal="pressed" from="Card1" to="." method="_on_Card1_pressed"]
 [connection signal="pressed" from="Card2" to="." method="_on_Card2_pressed"]
 [connection signal="pressed" from="Card3" to="." method="_on_Card3_pressed"]

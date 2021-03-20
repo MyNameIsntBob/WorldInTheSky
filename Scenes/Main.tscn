@@ -19,11 +19,11 @@ __meta__ = {
 }
 
 [node name="Island" parent="." instance=ExtResource( 1 )]
-position = Vector2( -283.004, 1.9223 )
+position = Vector2( -260, 0 )
 otherIsland = NodePath("../Island2")
 
 [node name="Island2" parent="." instance=ExtResource( 1 )]
-position = Vector2( 263.802, 0.662384 )
+position = Vector2( 260, 0 )
 otherIsland = NodePath("../Island")
 team = 1
 
@@ -36,5 +36,6 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Control" parent="." instance=ExtResource( 2 )]
+[node name="Hud" parent="." instance=ExtResource( 2 )]
+islands = [ NodePath("../Island"), NodePath("../Island2") ]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
