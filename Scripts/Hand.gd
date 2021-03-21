@@ -18,13 +18,14 @@ func _process(_delta):
 		else: 
 			get_child(i).modulate = Color(1, 1, 1)
 
-func end_turn():
-	var actual_selected = []
-	
+func actual_selected():
+	var value = []
 	for card in selected_cards:
-		actual_selected.append(hand[card])
-	
-	emit_signal('play_cards', actual_selected)
+		value.append(hand[card])
+	return value
+
+func end_turn():
+	emit_signal('play_cards', actual_selected())
 	Global.turn += 1
 	
 	get_hand()
@@ -41,6 +42,7 @@ func get_hand():
 		var image = hud_card.get_node('Sprite')
 		var card_name = hud_card.get_node('Name')
 		var description = hud_card.get_node('Description')
+		var mana = hud_card.get_node('Mana')
 		if 'image' in card:
 			image.texture = card.image
 		elif Global.turn % 2 == 0:
@@ -50,13 +52,25 @@ func get_hand():
 			
 		card_name.text = card.name
 		description.text = card.description
+		mana.text = str(card.cost)
 
 func select(card):
 	if card in selected_cards:
 		selected_cards.erase(card)
+		return
+		
+	var current_cost = total_cost()
+	
+	if current_cost + Cards.get_card(hand[card]).cost <= Global.mana[Global.turn % 2]:
+		selected_cards.push_back(card)
 
-	elif len(selected_cards) < 3:
-			selected_cards.push_back(card)
+func total_cost():
+	var cards = actual_selected()
+
+	var cost = 0
+	for card_id in cards:
+		cost += Cards.get_card(card_id).cost
+	return cost
 
 func _on_Card1_pressed():
 	select(0)

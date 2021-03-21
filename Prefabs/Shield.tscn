@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Art/Shield.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Shield.gd" type="Script" id=2]
+
+[node name="Shield" type="Sprite"]
+z_index = 1
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 18
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PoolVector2Array( -63.8601, 1.90204, -55.6005, -25.6369, -32.7118, -50.1521, -7.73698, -57.3078, 6.5397, -57.7093, 28.8122, -50.5821, 48.3861, -35.5601, 60.0317, -13.9527, 61.8557, 1.62142, 67.5662, 1.98091, 64.8935, -14.5007, 52.1982, -36.7732, 31.0394, -55.2593, 6.9851, -62.6092, -9.2738, -62.1638, -34.219, -53.7002, -59.6096, -27.8642, -68.3499, 1.76173 )
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

@@ -1,18 +1,17 @@
 extends Node
 
-
 var cards = {
 	1:{
-		'name': 'Summon Warrior',
-		'description': 'Summon 5 Warriors on your Island',
+		'name': 'Warrior',
+		'description': 'Summon 5 Warriors on your  Island',
 		'cost': 1,
 		'elfImage': preload('res://Art/ElfWarrior.png'),
 		'goblinImage': preload('res://Art/GoblinWarrior.png'),
 		'play': funcref(self, 'spawn_warrior')
 	},
 	2:{
-		'name': 'Summon Archer',
-		'description': 'Summon 3 Archers on your Island',
+		'name': 'Archer',
+		'description': 'Summon 3 Archers on your  Island',
 		'cost': 1,
 		'elfImage': preload('res://Art/ElfArcher.png'),
 		'goblinImage': preload('res://Art/GoblinArcher.png'),
@@ -20,30 +19,30 @@ var cards = {
 	},
 	3:{
 		'name': 'Launch',
-		'description': 'Launch up to 10 friendlies to enemy Island',
+		'description': 'Launch up to 10 friendlies to enemy  Island',
 		'cost': 1,
-		'image': preload('res://Art/card_base.png'),
+		'image': preload('res://Art/Catapult.png'),
 		'play': funcref(self, 'launch')
 	},
 	4:{
 		'name': 'Hat Trick',
-		'description': 'Turn Island upside down.',
+		'description': 'Turn  Island  upside  down.',
 		'cost': 3,
-		'image': preload('res://Art/card_base.png'),
+		'image': preload('res://Art/hat.png'),
 		'play': funcref(self, 'hat_trick')
 	},
 	5:{
 		'name': 'Heal',
 		'description': 'Heal your Island\'s crystal',
 		'cost': 1,
-		'image': preload('res://Art/card_base.png'),
+		'image': preload('res://Art/Heal.png'),
 		'play': funcref(self, 'heal')
 	},
 	6:{
 		'name': 'Force Field',
 		'description': 'Deploy a forcefield around your crystal',
 		'cost': 2,
-		'image': preload('res://Art/card_base.png'),
+		'image': preload('res://Art/ForceField.png'),
 		'play': funcref(self, 'shield')
 	}
 }
@@ -63,7 +62,7 @@ func launch(island):
 	island.launch_characters(10)
 	
 func heal(island):
-	island.heal(10)
+	island.heal(3)
 
 func shield(island):
 	island.shield()

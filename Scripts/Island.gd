@@ -1,14 +1,11 @@
 extends StaticBody2D
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 export (NodePath) var otherIsland
 export (int) var team
 
-var spawnRange := 100.0
+export var spawnRange := 100.0
 
+onready var SHIELD = preload('res://Prefabs/Shield.tscn')
 onready var CHARACTER = preload('res://Prefabs/Character.tscn')
 
 var friends := []
@@ -17,8 +14,6 @@ var enemies := []
 var isSpinning := false
 var spinSpeed := 1.0
 
-var hp := 10
-
 var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
@@ -26,14 +21,15 @@ func _ready():
 	rng.randomize()
 	otherIsland = get_node(otherIsland)
 	
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
 	if isSpinning:
 		rotate(spinSpeed * delta)
 		if rotation >= 2 * PI:
 			isSpinning = false
 			rotation = 0
+			
 			
 #	if Input.is_action_just_pressed("ui_accept"):
 #		spin()
@@ -54,6 +50,7 @@ func launch_characters(amount):
 			var character = friends.pop_front()
 			otherIsland.enemies.push_back(character)
 			character.launch()
+			character.island = otherIsland
 			character.onEnemy = true
 
 func remove_character(character):
@@ -66,21 +63,29 @@ func spawn_character(type):
 	var character = CHARACTER.instance()
 	character.type = type
 	friends.push_back(character)
-	get_parent().add_child(character)
 	character.island = self
 	character.position = self.position
-	character.position.y -= 50
+	character.position.y -= 10
 	character.position.x += rng.randf_range(-spawnRange, spawnRange)
 	character.team = team
+	get_parent().add_child(character)
 	
 func shield():
-	print('I\'ll add this in a bit')
+	if $Shield:
+		$Shield.stengthen()
+	else:
+		add_child(SHIELD.instance())
 	
 func heal(amount):
-	hp += amount
+	Global.hp[team] += amount
+	if Global.hp[team] > Global.maxHp:
+		Global.hp[team] = Global.maxHp
 	
 func take_damage(amount):
-	hp -= amount
+	if isSpinning:
+		return
+	
+	Global.hp[team] -= amount
 	
 func spin():
 	rotation = 0
@@ -98,3 +103,13 @@ func end_turn():
 			val.take_turn()
 		else:
 			enemies.erase(val)
+
+
+func _on_Area2D_body_entered(body):
+	if 'Arrow' in body.name:
+		body.queue_free()
+		Global.hp[team] -= 0.5
+		
+	elif body.team != team:
+		body.kill()
+		Global.hp[team] -= 1

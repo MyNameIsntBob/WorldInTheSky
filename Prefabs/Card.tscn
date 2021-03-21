@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
+[ext_resource path="res://CardFont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Art/card_base.png" type="Texture" id=2]
 
 [node name="Card" type="TextureButton"]
@@ -18,9 +19,10 @@ scale = Vector2( 0.756857, 0.756857 )
 [node name="Description" type="RichTextLabel" parent="."]
 modulate = Color( 0, 0, 0, 1 )
 margin_left = 15.0
-margin_top = 109.0
+margin_top = 107.0
 margin_right = 100.0
-margin_bottom = 141.0
+margin_bottom = 146.0
+custom_fonts/normal_font = ExtResource( 1 )
 text = "Description Test"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -28,11 +30,25 @@ __meta__ = {
 
 [node name="Name" type="Label" parent="."]
 modulate = Color( 0, 0, 0, 1 )
-margin_left = 38.4055
-margin_top = 3.70811
-margin_right = 107.406
-margin_bottom = 17.7081
+margin_left = 28.2218
+margin_top = 3.0
+margin_right = 80.2218
+margin_bottom = 17.0
+custom_fonts/font = ExtResource( 1 )
 text = "Test"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Mana" type="Label" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 91.1669
+margin_top = 3.49944
+margin_right = 96.1669
+margin_bottom = 13.4994
+custom_fonts/font = ExtResource( 1 )
+text = "3"
 __meta__ = {
 "_edit_use_anchors_": false
 }

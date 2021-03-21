@@ -11,7 +11,7 @@ enum types {
 }
 
 var type : int
-var team : int
+export var team : float
 var onEnemy := false
 
 var hp := 1
@@ -20,20 +20,24 @@ var damage := 1
 var airResistance := 0.01
 var friction := 0.1
 
-var launchForce := 570.0
+var gravity := 100
+var velocity := Vector2.ZERO
+
+var launchForce := 300
 var launchVariety := 50.0
 var launchDirection := PI/4
 var directionVariety := PI/12
 
-var island
-
-var gravity := 100
-var velocity := Vector2.ZERO
-
-var rng = RandomNumberGenerator.new()
+onready var ARROW = preload("res://Prefabs/Arrow.tscn")
+export var arrowForce := 100
+export var arrowVariety := 10
 
 var bounceForce := 50
 var bounceVariety := 10
+
+var island
+
+var rng = RandomNumberGenerator.new()
 
 var readyTurn := false
 
@@ -41,6 +45,16 @@ var enemies := []
 
 func _ready():
 	rng.randomize()
+	if team == teams.GOBLINS:
+		if type == types.WARRIOR:
+			$Sprite.texture = Global.art["goblin_warrior"]
+		elif type == types.ARCHER:
+			$Sprite.texture = Global.art["goblin_archer"]
+	elif team == teams.ELVES:
+		if type == types.WARRIOR:
+			$Sprite.texture = Global.art["elf_warrior"]
+		elif type == types.ARCHER:
+			$Sprite.texture = Global.art["elf_archer"]
 	
 func _process(delta):
 	velocity = move_and_slide(velocity, Vector2(0, -1))
@@ -58,21 +72,58 @@ func take_turn():
 	readyTurn = true
 
 func attack():
+	for i in range(len(enemies)):
+		if !enemies[i]:
+			enemies.remove(i)
+			
+	if type == types.ARCHER:
+		var target = get_target(true)
+		if !target:
+			bounce()
+		else:
+			var newForce = rng.randf_range(arrowForce - arrowVariety, arrowForce + arrowVariety)
+			var newDirection = rng.randf_range(launchDirection - directionVariety, launchDirection + directionVariety)
+			
+			var arrowVelocity = Vector2(
+				cos(newDirection) if target.x > self.position.x else -cos(newDirection), 
+				-sin(newDirection)) * newForce * target.distance_to(position)
+			var arrow = ARROW.instance()
+			arrow.velocity = arrowVelocity
+			arrow.position = self.position
+			arrow.sender = self
+			get_parent().add_child(arrow)
+		
+	elif type == types.WARRIOR:
+#		Play the attack animation
+
+		if len(enemies):
+			var en = enemies.pop_front()
+			if en:
+				en.kill()
 	
-	if len(enemies):
-		attack()
-		var en = enemies.pop_front()
-		if en:
-			en.kill()
-	
-	else:
-		bounce()
+		else:
+			bounce()
 	readyTurn = false
+	
+func get_target(ignoreCenter = false):
+	var target
+	
+	if !onEnemy and len(island.enemies):
+		for enemy in island.enemies:
+			if enemy and (!target or position.distance_to(enemy.position) < position.distance_to(target)):
+				target = enemy.position
+				
+	if !target:
+		if !ignoreCenter or onEnemy:  
+			target = island.position
+	return target
 		
 func bounce():
 	var newForce = rng.randf_range(bounceForce - bounceVariety, bounceForce + bounceVariety)
 	var newDirection = rng.randf_range(launchDirection - directionVariety, launchDirection + directionVariety)
-	velocity = Vector2(cos(newDirection) if island.position.x > self.position.x else -cos(newDirection), -sin(newDirection)) * newForce
+		
+	velocity = Vector2(cos(newDirection) if get_target().x > self.position.x else -cos(newDirection), -sin(newDirection)) * newForce
+		
 	
 func launch():
 	if onEnemy:
