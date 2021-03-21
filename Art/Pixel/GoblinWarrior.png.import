@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/HpBarBack.png-1404d0b8b79c72307ef9347bea6bc321.stex"
+path="res://.import/GoblinWarrior.png-e915971d4ec409c5b3f09400eb36a7f6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/HpBarBack.png"
-dest_files=[ "res://.import/HpBarBack.png-1404d0b8b79c72307ef9347bea6bc321.stex" ]
+source_file="res://Art/Pixel/GoblinWarrior.png"
+dest_files=[ "res://.import/GoblinWarrior.png-e915971d4ec409c5b3f09400eb36a7f6.stex" ]
 
 [params]
 

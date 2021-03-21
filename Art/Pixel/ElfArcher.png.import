@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/CrackedShield.png-0aa17eb74189be44e9c206bd47fd83ec.stex"
+path="res://.import/ElfArcher.png-713e4d749722f83d603229a6172369b7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/CrackedShield.png"
-dest_files=[ "res://.import/CrackedShield.png-0aa17eb74189be44e9c206bd47fd83ec.stex" ]
+source_file="res://Art/Pixel/ElfArcher.png"
+dest_files=[ "res://.import/ElfArcher.png-713e4d749722f83d603229a6172369b7.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Goblin.png-87b8169545612314914e57c114e365c1.stex"
+path="res://.import/CrackedShield.png-a7fd583265a2a0260c8bb56ce90cbf82.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Goblin.png"
-dest_files=[ "res://.import/Goblin.png-87b8169545612314914e57c114e365c1.stex" ]
+source_file="res://Art/Pixel/CrackedShield.png"
+dest_files=[ "res://.import/CrackedShield.png-a7fd583265a2a0260c8bb56ce90cbf82.stex" ]
 
 [params]
 

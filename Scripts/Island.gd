@@ -14,6 +14,8 @@ var enemies := []
 var isSpinning := false
 var spinSpeed := 1.0
 
+var gravity = 100
+
 var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
@@ -23,6 +25,11 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if position.y > 500:
+		Global.game_over()
+	
+	if Global.hp[team] <= 0:
+		self.position.y += gravity * delta
 	
 	if isSpinning:
 		rotate(spinSpeed * delta)

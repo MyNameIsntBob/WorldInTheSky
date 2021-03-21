@@ -6,9 +6,9 @@ var hp := 3
 # var a = 2
 # var b = "text"
 
-var normal = preload('res://Art/Shield.png')
-var hurt = preload('res://Art/CrackedShield.png')
-var broken = preload('res://Art/BrokenShield.png')
+var normal = preload('res://Art/Pixel/Shield.png')
+var hurt = preload('res://Art/Pixel/CrackedShield.png')
+var broken = preload('res://Art/Pixel/BrokenShield.png')
 
 
 # Called when the node enters the scene tree for the first time.

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Island.png-12601da225ba97377f59fdc5defabee3.stex"
+path="res://.import/Shield.png-9e3a8cd0fb95bbc87e0539baf8485af9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Island.png"
-dest_files=[ "res://.import/Island.png-12601da225ba97377f59fdc5defabee3.stex" ]
+source_file="res://Art/Pixel/Shield.png"
+dest_files=[ "res://.import/Shield.png-9e3a8cd0fb95bbc87e0539baf8485af9.stex" ]
 
 [params]
 

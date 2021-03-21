@@ -92,6 +92,8 @@ func attack():
 			arrow.position = self.position
 			arrow.sender = self
 			get_parent().add_child(arrow)
+			$AnimationPlayer.stop()
+			$AnimationPlayer.play("Attack")
 		
 	elif type == types.WARRIOR:
 #		Play the attack animation
@@ -99,6 +101,8 @@ func attack():
 		if len(enemies):
 			var en = enemies.pop_front()
 			if en:
+				$AnimationPlayer.stop()
+				$AnimationPlayer.play("Attack")
 				en.kill()
 	
 		else:
@@ -148,3 +152,8 @@ func _on_Area2D_body_exited(body):
 	if body in enemies:
 		enemies.erase(body)
 
+
+
+func _on_AnimationPlayer_animation_finished(_anim_name):
+	$AnimationPlayer.stop()
+	$AnimationPlayer.play("Attack")
