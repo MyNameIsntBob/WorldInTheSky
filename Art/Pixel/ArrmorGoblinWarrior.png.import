@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/island_base.png-ff5c2425b44d091c062cbee4a1b72b29.stex"
+path="res://.import/ArrmorGoblinWarrior.png-0b3fcb218f2dfb4a3952db88caa0b32b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/island_base.png"
-dest_files=[ "res://.import/island_base.png-ff5c2425b44d091c062cbee4a1b72b29.stex" ]
+source_file="res://Art/Pixel/ArrmorGoblinWarrior.png"
+dest_files=[ "res://.import/ArrmorGoblinWarrior.png-0b3fcb218f2dfb4a3952db88caa0b32b.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

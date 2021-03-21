@@ -26,16 +26,11 @@ func actual_selected():
 
 func end_turn():
 	emit_signal('play_cards', actual_selected())
-	Global.turn += 1
-	
 	get_hand()
 	selected_cards = []
 
 func get_hand():
-	if Global.turn % 2 == 0:
-		hand = PlayerDeck.get_hand()
-	else:
-		hand = EnemyDeck.get_hand()
+	hand = Deck.get_hand()
 	for i in range(len(hand)):
 		var hud_card = get_child(i)
 		var card = Cards.get_card(hand[i])
@@ -45,7 +40,7 @@ func get_hand():
 		var mana = hud_card.get_node('Mana')
 		if 'image' in card:
 			image.texture = card.image
-		elif Global.turn % 2 == 0:
+		elif Global.player_id == 0:
 			image.texture = card.elfImage
 		else:
 			image.texture = card.goblinImage
@@ -61,7 +56,7 @@ func select(card):
 		
 	var current_cost = total_cost()
 	
-	if current_cost + Cards.get_card(hand[card]).cost <= Global.mana[Global.turn % 2]:
+	if current_cost + Cards.get_card(hand[card]).cost <= Global.getMana(Global.player_id):
 		selected_cards.push_back(card)
 
 func total_cost():

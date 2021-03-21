@@ -14,8 +14,8 @@ func _ready():
 		manaSlots.append(get_node(manaSlotPositions[i]))
 
 func _process(_delta):
-	value = Global.hp[team]
+	value = Global.getHp(team)
 	max_value = Global.maxHp
 	
 	for i in range(len(manaSlots)):
-		manaSlots[len(manaSlots) - i - 1].pressed = len(manaSlots) - i <= Global.mana[team]
+		manaSlots[len(manaSlots) - i - 1].pressed = len(manaSlots) - i <= Global.getMana(team)

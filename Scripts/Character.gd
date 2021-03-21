@@ -10,8 +10,12 @@ enum types {
 	WARRIOR
 }
 
+puppet var rel_position = Vector2()
+puppetsync var rel_arrmor := false
+puppetsync var rel_stealth := false
+
 var type : int
-export var team : float
+export var team : int
 var onEnemy := false
 
 var hp := 1
@@ -45,31 +49,76 @@ var enemies := []
 
 func _ready():
 	rng.randomize()
-	if team == teams.GOBLINS:
+	setSprite()
+	
+remote func setSprite():
+	var arrmor = 'arrmor_' if rel_arrmor else ''
+	var newTeam = team
+	if rel_stealth:
+		newTeam = (newTeam + 1) % 2
+	
+	if newTeam == teams.GOBLINS:
 		if type == types.WARRIOR:
-			$Sprite.texture = Global.art["goblin_warrior"]
+			$Sprite.texture = Global.art[arrmor + "goblin_warrior"]
 		elif type == types.ARCHER:
-			$Sprite.texture = Global.art["goblin_archer"]
-	elif team == teams.ELVES:
+			$Sprite.texture = Global.art[arrmor + "goblin_archer"]
+	elif newTeam == teams.ELVES:
 		if type == types.WARRIOR:
-			$Sprite.texture = Global.art["elf_warrior"]
+			$Sprite.texture = Global.art[arrmor + "elf_warrior"]
 		elif type == types.ARCHER:
-			$Sprite.texture = Global.art["elf_archer"]
+			$Sprite.texture = Global.art[arrmor + "elf_archer"]
+	
 	
 func _process(delta):
-	velocity = move_and_slide(velocity, Vector2(0, -1))
+	if (is_network_master()):
+		velocity = move_and_slide(velocity, Vector2(0, -1))
+		
+		velocity.y += gravity * delta
+		
+		if is_on_floor():
+			if readyTurn:
+				attack()
+			velocity = velocity.linear_interpolate(Vector2.ZERO, friction)
+		else:
+			velocity = velocity.linear_interpolate(Vector2.ZERO, airResistance)
+		
+		rset('rel_position', position)
 	
-	velocity.y += gravity * delta
-	
-	if is_on_floor():
-		if readyTurn:
-			attack()
-		velocity = velocity.linear_interpolate(Vector2.ZERO, friction)
 	else:
-		velocity = velocity.linear_interpolate(Vector2.ZERO, airResistance)
+		position = rel_position
 	
 func take_turn():
 	readyTurn = true
+	
+func add_stealth():
+	if is_network_master():
+		rset('rel_stealth', true)
+		setSprite()
+		for id in network.players:
+			if id != 1:
+				rpc_id(id, 'setSprite')
+	
+func add_arrmor():
+	if is_network_master():
+		rset('rel_arrmor', true)
+		setSprite()
+		for id in network.players:
+			if id != 1:
+				rpc_id(id, 'setSprite')
+	
+remote func shoot_arrow(vel, pos):
+	if is_network_master():
+		for id in network.players:
+			if id != 1:
+				rpc_id(id, "shoot_arrow", vel, pos)
+	
+	var arrow = ARROW.instance()
+	arrow.rel_velocity = vel
+	arrow.position = pos
+	arrow.sender = self
+	get_parent().add_child(arrow)
+	$AnimationPlayer.stop()
+	$AnimationPlayer.play("Attack")
 
 func attack():
 	for i in range(len(enemies)):
@@ -83,17 +132,10 @@ func attack():
 		else:
 			var newForce = rng.randf_range(arrowForce - arrowVariety, arrowForce + arrowVariety)
 			var newDirection = rng.randf_range(launchDirection - directionVariety, launchDirection + directionVariety)
-			
 			var arrowVelocity = Vector2(
-				cos(newDirection) if target.x > self.position.x else -cos(newDirection), 
+					cos(newDirection) if target.x > self.position.x else -cos(newDirection), 
 				-sin(newDirection)) * newForce * target.distance_to(position)
-			var arrow = ARROW.instance()
-			arrow.velocity = arrowVelocity
-			arrow.position = self.position
-			arrow.sender = self
-			get_parent().add_child(arrow)
-			$AnimationPlayer.stop()
-			$AnimationPlayer.play("Attack")
+			shoot_arrow(arrowVelocity, self.position)
 		
 	elif type == types.WARRIOR:
 #		Play the attack animation
@@ -137,7 +179,20 @@ func launch():
 	var newDirection = rng.randf_range(launchDirection - directionVariety, launchDirection + directionVariety)
 	velocity = Vector2(cos(newDirection) if team == 0 else -cos(newDirection), -sin(newDirection)) * newForce
 	
-func kill():
+remote func kill():
+	if rel_arrmor:
+		if is_network_master():
+			rset('rel_arrmor', false)
+			setSprite()
+			for id in network.players:
+				if id != 1:
+					rpc_id(id, 'setSprite')
+		return
+	
+	if is_network_master():
+		for id in network.players:
+			if id != 1:
+				rpc_id(id, "kill")
 	if island:
 		island.remove_character(self)
 	self.queue_free()

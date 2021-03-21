@@ -16,15 +16,16 @@ _global_script_class_icons={
 [application]
 
 config/name="WorldInTheSky"
-run/main_scene="res://Scenes/Main.tscn"
+run/main_scene="res://Networking/main_menu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 Cards="*res://Scripts/Cards.gd"
-PlayerDeck="*res://Scripts/Deck.gd"
-EnemyDeck="*res://Scripts/Deck.gd"
+Deck="*res://Scripts/Deck.gd"
 Global="*res://Scripts/Global.gd"
+network="*res://Networking/network.gd"
+gamestate="*res://Networking/gamestate.gd"
 
 [display]
 

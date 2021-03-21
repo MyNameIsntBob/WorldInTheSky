@@ -13,10 +13,11 @@ func get_hand():
 
 func build_deck():
 	deck = []
-	for _i in range(5):
-		for card in Cards.cards:
+	for card in Cards.cards:
+		for _i in range(Cards.get_card(card).amount):
 			deck.append(card)
 	deck.shuffle()
-		
+	
+	
 func _ready():
 	randomize()

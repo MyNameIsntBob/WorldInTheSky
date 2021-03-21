@@ -10,11 +10,10 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-topText = NodePath("CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/Label")
 hand = NodePath("CanvasLayer/MarginContainer/VBoxContainer/Hand")
-label = NodePath("CanvasLayer/MarginContainer/VBoxContainer/PlayCards/Label")
 endTurn = NodePath("CanvasLayer/MarginContainer/VBoxContainer/PlayCards2/EndTurn")
-startTurn = NodePath("CanvasLayer/MarginContainer/VBoxContainer/StartTurn/Button")
+padding = NodePath("CanvasLayer/MarginContainer/VBoxContainer/Padding")
+label = NodePath("CanvasLayer/MarginContainer/VBoxContainer/Waiting")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -29,54 +28,10 @@ __meta__ = {
 margin_right = 1024.0
 margin_bottom = 600.0
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
-margin_right = 1024.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 0, 20 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
-margin_top = 24.0
-margin_right = 1024.0
-margin_bottom = 38.0
-alignment = 1
-
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = 492.0
-margin_right = 531.0
-margin_bottom = 14.0
-text = "Player"
-
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
-margin_top = 42.0
-margin_right = 1024.0
-margin_bottom = 384.0
-size_flags_vertical = 3
-
-[node name="PlayCards" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
-margin_top = 388.0
-margin_right = 1024.0
-margin_bottom = 402.0
-alignment = 1
-
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/PlayCards"]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = 428.0
-margin_right = 595.0
-margin_bottom = 14.0
-text = "Select Up to 3 cars to Play"
-
-[node name="StartTurn" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
-margin_top = 406.0
 margin_right = 1024.0
 margin_bottom = 426.0
-alignment = 1
-
-[node name="Button" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/StartTurn"]
-margin_left = 475.0
-margin_right = 548.0
-margin_bottom = 20.0
-text = "Start Turn"
+size_flags_vertical = 3
 
 [node name="Hand" parent="CanvasLayer/MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
 margin_top = 430.0
@@ -97,6 +52,26 @@ margin_bottom = 20.0
 focus_mode = 0
 enabled_focus_mode = 0
 text = "Play Cards"
-[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/StartTurn/Button" to="." method="_on_Button_pressed"]
+
+[node name="Waiting" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+visible = false
+margin_top = 380.0
+margin_right = 1024.0
+margin_bottom = 394.0
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Waiting"]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 434.0
+margin_right = 590.0
+margin_bottom = 14.0
+text = "Waiting For Other Player"
+
+[node name="Padding" type="MarginContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+visible = false
+margin_top = 389.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_vertical = 3
 [connection signal="play_cards" from="CanvasLayer/MarginContainer/VBoxContainer/Hand" to="." method="_on_Hand_play_cards"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/PlayCards2/EndTurn" to="CanvasLayer/MarginContainer/VBoxContainer/Hand" method="_on_EndTurn_pressed"]

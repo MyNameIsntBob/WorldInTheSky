@@ -11,7 +11,6 @@ onready var CHARACTER = preload('res://Prefabs/Character.tscn')
 var friends := []
 var enemies := []
 
-var isSpinning := false
 var spinSpeed := 1.0
 
 var gravity = 100
@@ -20,22 +19,34 @@ var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Global.connect("endTurn", self, "end_turn")
+	Global.connect("playCard", self, 'play_card')
+	
 	rng.randomize()
 	otherIsland = get_node(otherIsland)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	if Global.getSheild(team) > 0:
+		if !$Shield:
+			var shield = SHIELD.instance()
+			add_child(shield)
+			shield.team = team
+	
+	
 	if position.y > 500:
 		Global.game_over()
 	
-	if Global.hp[team] <= 0:
+	if Global.getHp(team) <= 0:
 		self.position.y += gravity * delta
 	
-	if isSpinning:
+	if Global.isSpinning(team):
 		rotate(spinSpeed * delta)
 		if rotation >= 2 * PI:
-			isSpinning = false
-			rotation = 0
+			Global.stopSpinning(team)
+	else:
+		rotation = 0
 			
 			
 #	if Input.is_action_just_pressed("ui_accept"):
@@ -51,9 +62,19 @@ func _process(delta):
 #	if Input.is_action_just_pressed('ui_down'):
 #		end_turn()
 
+func add_arrmor(amount):
+	for i in range(amount):
+		if i <= len(friends) - 1:
+			friends[i].add_arrmor()
+			
+func stealth(amount):
+	for i in range(amount):
+		if i <= len(friends) - 1:
+			friends[i].add_stealth()
+
 func launch_characters(amount):
-	for _i in range(amount + 1):
-		if len(friends):
+	for i in range(amount):
+		if i <= len(friends) - 1:
 			var character = friends.pop_front()
 			otherIsland.enemies.push_back(character)
 			character.launch()
@@ -66,7 +87,12 @@ func remove_character(character):
 	if character in enemies:
 		enemies.erase(character)
 
-func spawn_character(type):
+remote func spawn_character(type):
+	if get_tree().is_network_server():
+		for id in network.players:
+			if (id != 1):
+				rpc_id(id, 'spawn_character', type)
+	
 	var character = CHARACTER.instance()
 	character.type = type
 	friends.push_back(character)
@@ -75,28 +101,22 @@ func spawn_character(type):
 	character.position.y -= 10
 	character.position.x += rng.randf_range(-spawnRange, spawnRange)
 	character.team = team
+	character.set_network_master(1)
 	get_parent().add_child(character)
 	
 func shield():
-	if $Shield:
-		$Shield.stengthen()
-	else:
-		add_child(SHIELD.instance())
+	Global.addSheild(team)
 	
 func heal(amount):
-	Global.hp[team] += amount
-	if Global.hp[team] > Global.maxHp:
-		Global.hp[team] = Global.maxHp
-	
-func take_damage(amount):
-	if isSpinning:
-		return
-	
-	Global.hp[team] -= amount
+	Global.heal(amount)
 	
 func spin():
-	rotation = 0
-	isSpinning = true
+	Global.startSpinning((team + 1) % 2)
+	
+func play_card(player_id, card_func):
+	if player_id != team:
+		return
+	card_func.call_func(self)
 	
 func end_turn():
 	for val in friends:
@@ -111,12 +131,15 @@ func end_turn():
 		else:
 			enemies.erase(val)
 
-
 func _on_Area2D_body_entered(body):
+	if !get_tree().is_network_server() or Global.isSpinning(team):
+		return
+	
+	
 	if 'Arrow' in body.name:
 		body.queue_free()
-		Global.hp[team] -= 0.5
+		Global.damage(team, 0.5)
 		
 	elif body.team != team:
 		body.kill()
-		Global.hp[team] -= 1
+		Global.damage(team, 1)
